@@ -9,7 +9,7 @@
 import UIKit
 
 extension UITextField {
-    
+
     /// Method adds left indent for text into text field.
     ///
     /// - Parameters:

@@ -15,7 +15,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
             photoImageView.image = UIImage(named: myphoto)
         }
     }
-    
+
     /// Картинка (фото)
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -24,16 +24,16 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         imageView.toAutoLayout()
         return imageView
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
+
         setupLayout()
     }
 }

@@ -11,13 +11,13 @@ import UIKit
 final class FeedViewController: UIViewController {
     // This property identifies the task request to run in the background.
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
-    
+
     // Get first post, if exists
     let post: Post? = {
         guard Storage.posts.count > 0 else { return nil }
         return Storage.posts[0]
     }()
-    
+
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.toAutoLayout()
@@ -30,7 +30,7 @@ final class FeedViewController: UIViewController {
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
-    
+
     private lazy var showPostButton: UIButton = {
         let button = UIButton(type: .system)
         button.toAutoLayout()
@@ -39,19 +39,19 @@ final class FeedViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
         button.setShadowPath()
-        
+
         button.addTarget(self, action: #selector(showPostButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     @objc private func showPostButtonTapped(_ sender: Any) {
-        let vc = PostViewController()
-        vc.post = post
-        navigationController?.pushViewController(vc, animated: true)
+        let postControlller = PostViewController()
+        postControlller.post = post
+        navigationController?.pushViewController(postControlller, animated: true)
         // Diagnostic
         print(type(of: self), #function)
     }
-    
+
     override func viewDidLoad() {
       super.viewDidLoad()
       title = "Feed"
@@ -66,9 +66,9 @@ final class FeedViewController: UIViewController {
     // MARK: Layout
     private func setupLayout() {
         view.addSubview(showPostButton)
-        
+
         let safe = view.safeAreaLayoutGuide
-        
+
         let constraints = [
             showPostButton.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
             showPostButton.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
@@ -82,38 +82,37 @@ final class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
         // Start background mode
         registerBackgroundTask()
-        
+
         print(type(of: self), #function)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print(type(of: self), #function)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Stop background mode
-        ​endBackgroundTask()
-        
+        endBackgroundTask()
+
         print(type(of: self), #function)
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print(type(of: self), #function)
     }
-    
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         print(type(of: self), #function)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         print(type(of: self), #function)
     }
-    
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "post" else {
@@ -124,22 +123,19 @@ final class FeedViewController: UIViewController {
         }
         postViewController.post = post
     }
-    
-}
 
-// Background mopde injection
-extension FeedViewController {
-    func registerBackgroundTask() {
-        print("Background task started.")
-        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
-            self?.​endBackgroundTask()
-        }
-        assert(backgroundTask != .invalid)
-    }
-      
-    func ​endBackgroundTask() {
+    func endBackgroundTask() {
         print("Background task ended.")
         UIApplication.shared.endBackgroundTask(backgroundTask)
         backgroundTask = .invalid
+    }
+
+    // Background mopde injection
+    func registerBackgroundTask() {
+        print("Background task started.")
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            self?.endBackgroundTask()
+        }
+        assert(backgroundTask != .invalid)
     }
 }

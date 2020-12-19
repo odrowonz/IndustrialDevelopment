@@ -8,16 +8,16 @@
 struct Profile {
     // никнейм пользователя
     let name: String
-    
+
     // статус
     var status: String?
-    
+
     // имя аватара из каталога 'Assets.xcassets'
     let image: String
-    
+
     // возраст
     let age: Int
-    
+
     // количество лайков
     let karma: Int
 }

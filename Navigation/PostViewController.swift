@@ -9,19 +9,19 @@
 import UIKit
 
 class PostViewController: UIViewController {
-    
+
     var post: Post?
-    
+
     private lazy var barButton: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showInfoButtonTapped))
         return button
     }()
-    
+
     @objc private func showInfoButtonTapped() {
-        let ic = InfoViewController()
-        ic.post = post
-        ic.cancelFinalAction = nil
-        ic.deleteFinalAction = {
+        let infoController = InfoViewController()
+        infoController.post = post
+        infoController.cancelFinalAction = nil
+        infoController.deleteFinalAction = {
             // Guard of action's body
             guard let nav = self.navigationController,
                   nav.viewControllers.count > 0
@@ -29,9 +29,9 @@ class PostViewController: UIViewController {
             // Go to root controller
             nav.popToRootViewController(animated: true)
         }
-        navigationController?.present(ic, animated: true)
+        navigationController?.present(infoController, animated: true)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = post?.description
