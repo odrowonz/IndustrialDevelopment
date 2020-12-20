@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 private enum State {
     case expanded
@@ -137,6 +138,11 @@ class ProfileTableHeaderView: UIView {
         return view
     }()
 
+    var topMinAnchor: Constraint? = nil
+    var leadingMinAnchor: Constraint? = nil
+    var trailingMinAnchor: Constraint? = nil
+    var bottomMinAnchor: Constraint? = nil
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -206,50 +212,53 @@ extension ProfileTableHeaderView {
 
     func setupLayout() {
         addAllSubviews()
+        
         // constraint for collapsed state
-        let topMinAnchor = profileImageView.topAnchor.constraint(equalTo: profileImageContainer.topAnchor)
-        topMinAnchor.identifier = "topMinAnchor"
-
-        let leadingMinAnchor = profileImageView.leadingAnchor.constraint(equalTo: profileImageContainer.leadingAnchor)
-        leadingMinAnchor.identifier = "leadingMinAnchor"
-        let trailingMinAnchor = profileImageView.trailingAnchor.constraint(
-            equalTo: profileImageContainer.trailingAnchor)
-        trailingMinAnchor.identifier = "trailingMinAnchor"
-
-        let bottomMinAnchor = profileImageView.bottomAnchor.constraint(equalTo: profileImageContainer.bottomAnchor)
-        bottomMinAnchor.identifier = "bottomMinAnchor"
+        profileImageView.snp.makeConstraints { (make) -> Void in
+            self.topMinAnchor = make.top.equalTo(profileImageContainer).constraint
+            self.leadingMinAnchor = make.left.equalTo(profileImageContainer).constraint
+            self.trailingMinAnchor = make.right.equalTo(profileImageContainer).constraint
+            self.bottomMinAnchor = make.bottom.equalTo(profileImageContainer).constraint
+        }
 
         // All constraints
-        let constraints = [
-            profileImageContainer.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            profileImageContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            profileImageContainer.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.3),
-            profileImageContainer.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 0.3),
-            closeButton.widthAnchor.constraint(equalToConstant: 40),
-            closeButton.heightAnchor.constraint(equalToConstant: 40),
-            topMinAnchor, leadingMinAnchor, trailingMinAnchor, bottomMinAnchor,
-            profileNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
-            profileNameLabel.leadingAnchor.constraint(equalTo: profileImageContainer.trailingAnchor, constant: 16),
-            profileNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            profileStatusLabel.leadingAnchor.constraint(equalTo: profileImageContainer.trailingAnchor, constant: 16),
-            profileStatusLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            profileStatusTextField.leadingAnchor.constraint(equalTo: profileImageContainer.trailingAnchor,
-                                                            constant: 16),
-            profileStatusTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            profileStatusTextField.topAnchor.constraint(equalTo: profileStatusLabel.bottomAnchor, constant: 5),
-            profileStatusTextField.heightAnchor.constraint(equalToConstant: 40),
-            showStatusButton.topAnchor.constraint(equalTo: profileStatusTextField.bottomAnchor, constant: 16),
-
-            showStatusButton.topAnchor.constraint(equalTo: profileImageContainer.bottomAnchor, constant: 16),
-            showStatusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            showStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-
-            showStatusButton.heightAnchor.constraint(equalToConstant: 50),
-
-            showStatusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
-          ]
-
-        NSLayoutConstraint.activate(constraints)
+        profileImageContainer.snp.makeConstraints { (make) -> Void in
+            make.top.equalToSuperview().offset(16)
+            make.left.equalToSuperview().offset(16)
+            make.width.equalToSuperview().multipliedBy(0.3)
+            make.height.equalTo(profileImageContainer.snp.width)
+        }
+        
+        closeButton.snp.makeConstraints { (make) -> Void in
+            make.size.equalTo(CGSize(width: 40, height: 40))
+        }
+        
+        profileNameLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalToSuperview().offset(27)
+            make.left.equalTo(profileImageContainer.snp.right).offset(16)
+            make.right.equalToSuperview().offset(-16)
+        }
+        
+        profileStatusLabel.snp.makeConstraints { (make)-> Void in
+            make.left.equalTo(profileImageContainer.snp.right).offset(16)
+            make.right.equalToSuperview().offset(-16)
+        }
+        
+        profileStatusTextField.snp.makeConstraints { (make) -> Void in
+            make.left.equalTo(profileImageContainer.snp.right).offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.top.equalTo(profileStatusLabel.snp.bottom).offset(5)
+            make.height.equalTo(40)
+        }
+        
+        showStatusButton.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(profileStatusTextField.snp.bottom).offset(16)
+            make.top.equalTo(profileImageContainer.snp.bottom).offset(16)
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.height.equalTo(50)
+            make.bottom.equalToSuperview().offset(-16)
+        }
     }
 }
 
@@ -267,48 +276,34 @@ extension ProfileTableHeaderView {
     // Expanded animation
     private func expandLayout() {
         // Check: root in second level upper
-        guard let rootSV = superview?.superview else { return }
+        
+        //guard let rootSV: UIView = superview?.superview else { return }
+        guard let rootSV = UIApplication.shared.keyWindow else { return }
 
         // Expand blind
-        let topBlindAnchor = self.blindView.topAnchor.constraint(equalTo: rootSV.topAnchor)
-        topBlindAnchor.identifier = "topBlindAnchor"
-        topBlindAnchor.isActive = true
-        let leadingBlindAnchor = self.blindView.leadingAnchor.constraint(equalTo: rootSV.leadingAnchor)
-        leadingBlindAnchor.identifier = "leadingBlindAnchor"
-        leadingBlindAnchor.isActive = true
-        let trailingBlindAnchor = self.blindView.trailingAnchor.constraint(equalTo: rootSV.trailingAnchor)
-        trailingBlindAnchor.identifier = "trailingBlindAnchor"
-        trailingBlindAnchor.isActive = true
-        let bottomBlindAnchor = self.blindView.bottomAnchor.constraint(equalTo: rootSV.bottomAnchor)
-        bottomBlindAnchor.identifier = "bottomBlindAnchor"
-        bottomBlindAnchor.isActive = true
-        let widthBlindAnchor = self.blindView.widthAnchor.constraint(equalTo: rootSV.widthAnchor)
-        widthBlindAnchor.identifier = "widthBlindAnchor"
-        widthBlindAnchor.isActive = true
-        let heightBlindAnchor = self.blindView.heightAnchor.constraint(equalTo: rootSV.heightAnchor)
-        heightBlindAnchor.identifier = "heightBlindAnchor"
-        heightBlindAnchor.isActive = true
+        blindView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(rootSV.snp.top)
+            make.left.equalTo(rootSV.snp.left)
+            make.right.equalTo(rootSV.snp.right)
+            make.bottom.equalTo(rootSV.snp.bottom)
+            make.width.equalTo(rootSV.snp.width)
+            make.height.equalTo(rootSV.snp.height)
+        }
+        
         // Button in the upper right corner
-        let topСloseButtonAnchor = self.closeButton.topAnchor.constraint(equalTo: rootSV.safeAreaLayoutGuide.topAnchor,
-                                                                          constant: 10)
-        topСloseButtonAnchor.identifier = "topСloseButtonAnchor"
-        topСloseButtonAnchor.isActive = true
-        let trailingСloseButtonAnchor = self.closeButton.trailingAnchor.constraint(
-            equalTo: rootSV.safeAreaLayoutGuide.trailingAnchor)
-        trailingСloseButtonAnchor.identifier = "trailingСloseButtonAnchor"
-        trailingСloseButtonAnchor.isActive = true
-        NSLayoutConstraint.activate([topBlindAnchor, leadingBlindAnchor,
-                                     trailingBlindAnchor, bottomBlindAnchor,
-                                     widthBlindAnchor, heightBlindAnchor,
-                                     topСloseButtonAnchor, trailingСloseButtonAnchor])
+        closeButton.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(rootSV.safeAreaLayoutGuide).offset(10)
+            make.right.equalTo(rootSV.safeAreaLayoutGuide)
+        }
+
         self.layoutIfNeeded()
     }
 
     private func expand() {
         // Check: has table defined?
         guard let tableView = self.tableView else { return }
-        // Check: root in second level upper
-        guard let rootSV = superview?.superview else { return }
+        // Check: find main window
+        guard let rootSV = UIApplication.shared.keyWindow else { return }
 
         expandLayout()
         mainAnimator.addAnimations {

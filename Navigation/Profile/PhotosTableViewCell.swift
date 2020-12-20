@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class PhotosTableViewCell: UITableViewCell {
 
@@ -123,40 +124,48 @@ final class PhotosTableViewCell: UITableViewCell {
         contentView.addSubview(photoImageView2)
         contentView.addSubview(photoImageView3)
         contentView.addSubview(photoImageView4)
-
-        let constraints = [
-            photosLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            photosLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-
-            photosLabel.bottomAnchor.constraint(equalTo: photoImageView1.topAnchor, constant: -12),
-            photosLabel.bottomAnchor.constraint(equalTo: photoImageView2.topAnchor, constant: -12),
-            photosLabel.bottomAnchor.constraint(equalTo: photoImageView3.topAnchor, constant: -12),
-            photosLabel.bottomAnchor.constraint(equalTo: photoImageView4.topAnchor, constant: -12),
-
-            showPhotoGalleryButton.centerYAnchor.constraint(equalTo: photosLabel.centerYAnchor),
-            showPhotoGalleryButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-
-            photoImageView1.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            photoImageView1.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            photoImageView1.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12),
-            photoImageView1.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12),
-            photoImageView1.trailingAnchor.constraint(equalTo: photoImageView2.leadingAnchor, constant: -8),
-
-            photoImageView2.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            photoImageView2.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12),
-            photoImageView2.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12),
-            photoImageView2.trailingAnchor.constraint(equalTo: photoImageView3.leadingAnchor, constant: -8),
-
-            photoImageView3.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            photoImageView3.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12),
-            photoImageView3.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12),
-            photoImageView3.trailingAnchor.constraint(equalTo: photoImageView4.leadingAnchor, constant: -8),
-
-            photoImageView4.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            photoImageView4.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12),
-            photoImageView4.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.25, constant: -12)
-        ]
-
-        NSLayoutConstraint.activate(constraints)
+        
+        // Constraints for photosLabel
+        photosLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(contentView).offset(12)
+            make.left.equalTo(contentView).offset(12)
+        }
+        // Constraints for photoImageView1
+        photoImageView1.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(photosLabel.snp.bottom).offset(12)
+            make.left.equalTo(contentView).offset(12)
+            make.bottom.equalTo(contentView).offset(-12)
+            make.width.equalTo(contentView).multipliedBy(0.25).offset(-12)
+            make.height.equalTo(contentView.snp.width).multipliedBy(0.25).offset(-12)
+            make.right.equalTo(photoImageView2.snp.left).offset(-8)
+        }
+        // Constraints for photoImageView2
+        photoImageView2.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(photosLabel.snp.bottom).offset(12)
+            make.bottom.equalTo(contentView).offset(-12)
+            make.width.equalTo(contentView).multipliedBy(0.25).offset(-12)
+            make.height.equalTo(contentView.snp.width).multipliedBy(0.25).offset(-12)
+            make.right.equalTo(photoImageView3.snp.left).offset(-8)
+        }
+        // Constraints for photoImageView3
+        photoImageView3.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(photosLabel.snp.bottom).offset(12)
+            make.bottom.equalTo(contentView).offset(-12)
+            make.width.equalTo(contentView).multipliedBy(0.25).offset(-12)
+            make.height.equalTo(contentView.snp.width).multipliedBy(0.25).offset(-12)
+            make.right.equalTo(photoImageView4.snp.left).offset(-8)
+        }
+        // Constraints for photoImageView4
+        photoImageView4.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(photosLabel.snp.bottom).offset(12)
+            make.bottom.equalTo(contentView).offset(-12)
+            make.width.equalTo(contentView).multipliedBy(0.25).offset(-12)
+            make.height.equalTo(contentView.snp.width).multipliedBy(0.25).offset(-12)
+        }
+        // Constraints for showPhotoGalleryButton
+        showPhotoGalleryButton.snp.makeConstraints { (make) -> Void in
+            make.centerY.equalTo(photosLabel.snp.centerY)
+            make.right.equalTo(contentView.snp.right).offset(-12)
+        }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class ProfileViewController: UIViewController {
 
@@ -139,14 +140,12 @@ extension ProfileViewController {
     private func setupLayout() {
         view.addSubview(postTableView)
 
-        let constraints = [
-            postTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            postTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            postTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            postTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ]
-
-        NSLayoutConstraint.activate(constraints)
+        postTableView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(view)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.bottom.equalTo(view)
+        }
     }
 }
 
