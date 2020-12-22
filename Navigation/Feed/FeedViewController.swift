@@ -20,7 +20,7 @@ final class FeedViewController: UIViewController {
         return Storage.posts[0]
     }()
 
-    private lazy var profileImageView: UIView = {
+    private lazy var profileImageView: PersonView = {
         let personView = PersonView()
         personView.named = "Petya"
         personView.toAutoLayout()
