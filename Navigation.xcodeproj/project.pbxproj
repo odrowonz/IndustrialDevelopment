@@ -15,6 +15,12 @@
 		060782C8250CEE5D00A87020 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060782C7250CEE5D00A87020 /* PostViewController.swift */; };
 		060782CA250CEE7200A87020 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060782C9250CEE7200A87020 /* Post.swift */; };
 		DB0E5FB425419D4100569ECB /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0E5FB325419D4100569ECB /* PhotosViewController.swift */; };
+		DB17B98125928E9100ACC584 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17B98025928E9100ACC584 /* Checker.swift */; };
+		DB17B98225928E9100ACC584 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17B98025928E9100ACC584 /* Checker.swift */; };
+		DB17B9862592952800ACC584 /* LoginViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17B9852592952800ACC584 /* LoginViewControllerDelegate.swift */; };
+		DB17B9872592952800ACC584 /* LoginViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17B9852592952800ACC584 /* LoginViewControllerDelegate.swift */; };
+		DB17B98B2592957F00ACC584 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17B98A2592957F00ACC584 /* LoginInspector.swift */; };
+		DB17B98C2592957F00ACC584 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17B98A2592957F00ACC584 /* LoginInspector.swift */; };
 		DB455A0625338D11006DB535 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB455A0525338D11006DB535 /* Storage.swift */; };
 		DB455A0D2535DAEB006DB535 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB455A0C2535DAEB006DB535 /* LogInViewController.swift */; };
 		DB48163E253ADAEA002C12F8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB48163D253ADAEA002C12F8 /* Profile.swift */; };
@@ -64,6 +70,9 @@
 		060782C7250CEE5D00A87020 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		060782C9250CEE7200A87020 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		DB0E5FB325419D4100569ECB /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		DB17B98025928E9100ACC584 /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
+		DB17B9852592952800ACC584 /* LoginViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerDelegate.swift; sourceTree = "<group>"; };
+		DB17B98A2592957F00ACC584 /* LoginInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
 		DB455A0525338D11006DB535 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		DB455A0C2535DAEB006DB535 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		DB48163D253ADAEA002C12F8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -224,6 +233,9 @@
 			isa = PBXGroup;
 			children = (
 				DB455A0C2535DAEB006DB535 /* LogInViewController.swift */,
+				DB17B98025928E9100ACC584 /* Checker.swift */,
+				DB17B9852592952800ACC584 /* LoginViewControllerDelegate.swift */,
+				DB17B98A2592957F00ACC584 /* LoginInspector.swift */,
 			);
 			path = LogIn;
 			sourceTree = "<group>";
@@ -342,6 +354,7 @@
 				060782B2250CE27700A87020 /* AppDelegate.swift in Sources */,
 				DBE2887325373F29004C9522 /* SystemColors.swift in Sources */,
 				DB691C7225377FD4007E02F7 /* ProfileTableHeaderView.swift in Sources */,
+				DB17B9862592952800ACC584 /* LoginViewControllerDelegate.swift in Sources */,
 				060782C6250CEB0A00A87020 /* InfoViewController.swift in Sources */,
 				DBE2886C2536291A004C9522 /* UIImage+Alpha.swift in Sources */,
 				060782CA250CEE7200A87020 /* Post.swift in Sources */,
@@ -350,8 +363,10 @@
 				DB455A0625338D11006DB535 /* Storage.swift in Sources */,
 				DB691C762537889B007E02F7 /* PostTableViewCell.swift in Sources */,
 				DBECBD1B258669FA003041DB /* MainTabBarController.swift in Sources */,
+				DB17B98B2592957F00ACC584 /* LoginInspector.swift in Sources */,
 				DBE730ED2528CD2300393876 /* ProfileViewController.swift in Sources */,
 				DB455A0D2535DAEB006DB535 /* LogInViewController.swift in Sources */,
+				DB17B98125928E9100ACC584 /* Checker.swift in Sources */,
 				060782C8250CEE5D00A87020 /* PostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,6 +384,7 @@
 				DB6AEC85258AB6E4008A0129 /* AppDelegate.swift in Sources */,
 				DB6AEC86258AB6E4008A0129 /* SystemColors.swift in Sources */,
 				DB6AEC87258AB6E4008A0129 /* ProfileTableHeaderView.swift in Sources */,
+				DB17B9872592952800ACC584 /* LoginViewControllerDelegate.swift in Sources */,
 				DB6AEC88258AB6E4008A0129 /* InfoViewController.swift in Sources */,
 				DB6AEC89258AB6E4008A0129 /* UIImage+Alpha.swift in Sources */,
 				DB6AEC8A258AB6E4008A0129 /* Post.swift in Sources */,
@@ -377,8 +393,10 @@
 				DB6AEC8D258AB6E4008A0129 /* Storage.swift in Sources */,
 				DB6AEC8E258AB6E4008A0129 /* PostTableViewCell.swift in Sources */,
 				DB6AEC8F258AB6E4008A0129 /* MainTabBarController.swift in Sources */,
+				DB17B98C2592957F00ACC584 /* LoginInspector.swift in Sources */,
 				DB6AEC90258AB6E4008A0129 /* ProfileViewController.swift in Sources */,
 				DB6AEC91258AB6E4008A0129 /* LogInViewController.swift in Sources */,
+				DB17B98225928E9100ACC584 /* Checker.swift in Sources */,
 				DB6AEC92258AB6E4008A0129 /* PostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

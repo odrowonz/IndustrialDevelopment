@@ -25,6 +25,7 @@ class MainTabBarController: UITabBarController {
     lazy var profileTabBar: UINavigationController = {
         var nav = UINavigationController()
         let loginVC = LogInViewController(nibName: nil, bundle: nil)
+        loginVC.authorizationDelegate = LoginInspector()
         nav.viewControllers = [loginVC]
         let title = "Profile"
         let image = UIImage(named: "person.fill")
