@@ -13,9 +13,13 @@ final class FeedViewController: UIViewController {
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     
     // Get first post, if exists
-    let post: Post? = {
+    let post0: Post? = {
         guard Storage.posts.count > 0 else { return nil }
         return Storage.posts[0]
+    }()
+    let post1: Post? = {
+        guard Storage.posts.count > 1 else { return nil }
+        return Storage.posts[1]
     }()
     
     private lazy var profileImageView: UIImageView = {
@@ -31,22 +35,39 @@ final class FeedViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var showPostButton: UIButton = {
+    private lazy var showPost0Button: UIButton = {
         let button = UIButton(type: .system)
         button.toAutoLayout()
-        button.setTitle("Open Post", for: .normal)
+        button.setTitle("Open Post 0", for: .normal)
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
         button.setShadowPath()
-        
+        button.tag = 0
+        button.addTarget(self, action: #selector(showPostButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    private lazy var showPost1Button: UIButton = {
+        let button = UIButton(type: .system)
+        button.toAutoLayout()
+        button.setTitle("Open Post 1", for: .normal)
+        button.backgroundColor = .systemBlue
+        button.setTitleColor(.white, for: .normal)
+        button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
+        button.setShadowPath()
+        button.tag = 1
         button.addTarget(self, action: #selector(showPostButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    @objc private func showPostButtonTapped(_ sender: Any) {
+    @objc private func showPostButtonTapped(_ sender: UIButton) {
         let vc = PostViewController()
-        vc.post = post
+        switch (sender.tag) {
+        case 0: vc.post = post0
+        case 1: vc.post = post1
+        default:
+            vc.post = nil
+        }
         navigationController?.pushViewController(vc, animated: true)
         // Diagnostic
         print(type(of: self), #function)
@@ -65,15 +86,20 @@ final class FeedViewController: UIViewController {
 
     // MARK: Layout
     private func setupLayout() {
-        view.addSubview(showPostButton)
-        
+        view.addSubview(showPost0Button)
+        view.addSubview(showPost1Button)
+
         let safe = view.safeAreaLayoutGuide
         
         let constraints = [
-            showPostButton.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-            showPostButton.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
-            showPostButton.widthAnchor.constraint(equalToConstant: 110),
-            showPostButton.heightAnchor.constraint(equalToConstant: 40)
+            showPost0Button.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            showPost0Button.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
+            showPost0Button.widthAnchor.constraint(equalToConstant: 110),
+            showPost0Button.heightAnchor.constraint(equalToConstant: 40),
+            showPost1Button.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            showPost1Button.topAnchor.constraint(equalTo: showPost0Button.bottomAnchor, constant: 16),
+            showPost1Button.widthAnchor.constraint(equalToConstant: 110),
+            showPost1Button.heightAnchor.constraint(equalToConstant: 40)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -113,18 +139,6 @@ final class FeedViewController: UIViewController {
         super.viewDidLayoutSubviews()
         print(type(of: self), #function)
     }
-    
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == "post" else {
-            return
-        }
-        guard let postViewController = segue.destination as? PostViewController else {
-            return
-        }
-        postViewController.post = post
-    }
-    
 }
 
 // Background mopde injection
