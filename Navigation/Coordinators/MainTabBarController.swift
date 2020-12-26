@@ -13,7 +13,7 @@ class MainTabBarController: UITabBarController {
     /// Feed tab bar
     lazy var feedTabBar: UINavigationController = {
         var nav = UINavigationController()
-        let feedVC = FeedViewController()
+        let feedVC = FeedViewController(output: PostPresenter())
         nav.viewControllers = [feedVC]
         let title = "Feed"
         let image = UIImage(named: "house.fill")

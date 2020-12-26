@@ -11,95 +11,50 @@ import UIKit
 final class FeedViewController: UIViewController {
     // This property identifies the task request to run in the background.
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    var output: FeedViewOutput
     
-    // Get first post, if exists
-    let post0: Post? = {
-        guard Storage.posts.count > 0 else { return nil }
-        return Storage.posts[0]
-    }()
-    let post1: Post? = {
-        guard Storage.posts.count > 1 else { return nil }
-        return Storage.posts[1]
-    }()
-    
-    private lazy var profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.toAutoLayout()
-        imageView.layer.borderWidth = 3
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.backgroundColor = .darkGray
-        imageView.clipsToBounds = true
-        // Make image sensitive for tap
-        imageView.isUserInteractionEnabled = true
-        return imageView
-    }()
-    
-    private lazy var showPost0Button: UIButton = {
-        let button = UIButton(type: .system)
-        button.toAutoLayout()
-        button.setTitle("Open Post 0", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
-        button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
-        button.setShadowPath()
-        button.tag = 0
-        button.addTarget(self, action: #selector(showPostButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    private lazy var showPost1Button: UIButton = {
-        let button = UIButton(type: .system)
-        button.toAutoLayout()
-        button.setTitle("Open Post 1", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
-        button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
-        button.setShadowPath()
-        button.tag = 1
-        button.addTarget(self, action: #selector(showPostButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    @objc private func showPostButtonTapped(_ sender: UIButton) {
-        let vc = PostViewController()
-        switch (sender.tag) {
-        case 0: vc.post = post0
-        case 1: vc.post = post1
-        default:
-            vc.post = nil
+    private lazy var feedStackView: FeedStackView = {
+        let feedSV = FeedStackView()
+        feedSV.toAutoLayout()
+        feedSV.onTap = {
+            post in
+            self.output.showPost(post)
         }
-        navigationController?.pushViewController(vc, animated: true)
-        // Diagnostic
-        print(type(of: self), #function)
+        return feedSV
+    }()
+    
+    init(output: FeedViewOutput) {
+        self.output = output
+        super.init(nibName:nil, bundle:.main)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
-      super.viewDidLoad()
-      title = "Feed"
-      // Tunning root view
-      view.backgroundColor = .systemGreen
-      // Setup all visual elements
-      setupLayout()
-      // Diagnostic
-      print(type(of: self), #function)
+        super.viewDidLoad()
+        output.navigationController = navigationController
+        title = "Feed"
+        // Tunning root view
+        view.backgroundColor = .systemGreen
+        // Setup all visual elements
+        setupLayout()
+        // Diagnostic
+        print(type(of: self), #function)
     }
 
     // MARK: Layout
     private func setupLayout() {
-        view.addSubview(showPost0Button)
-        view.addSubview(showPost1Button)
+        view.addSubview(feedStackView)
 
         let safe = view.safeAreaLayoutGuide
         
         let constraints = [
-            showPost0Button.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-            showPost0Button.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
-            showPost0Button.widthAnchor.constraint(equalToConstant: 110),
-            showPost0Button.heightAnchor.constraint(equalToConstant: 40),
-            showPost1Button.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-            showPost1Button.topAnchor.constraint(equalTo: showPost0Button.bottomAnchor, constant: 16),
-            showPost1Button.widthAnchor.constraint(equalToConstant: 110),
-            showPost1Button.heightAnchor.constraint(equalToConstant: 40)
+            feedStackView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            feedStackView.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
+            feedStackView.widthAnchor.constraint(equalToConstant: 110),
+            feedStackView.heightAnchor.constraint(equalToConstant: 96)
         ]
         NSLayoutConstraint.activate(constraints)
     }
