@@ -39,7 +39,6 @@ class PostViewController: UIViewController {
         view.backgroundColor = .systemPink
         // Setup all visual elements
         self.navigationItem.setRightBarButton(barButton, animated: true)
-        //setupLayout()
         // Diagnostic
         print(type(of: self), #function)
     }

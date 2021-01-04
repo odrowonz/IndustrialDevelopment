@@ -240,8 +240,6 @@ class LogInViewController: UIViewController {
     // Hide keyboard
     func hideKeyboard() {
         view.endEditing(true)
-        //login.resignFirstResponder()
-        //password.resignFirstResponder()
     }
 }
 
