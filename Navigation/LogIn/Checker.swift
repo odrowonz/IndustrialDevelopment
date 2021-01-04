@@ -17,7 +17,7 @@ class Checker {
         return checker
     }()
     
-    /// Constructor
+    //MARK: - Init
     private init() {}
 }
 
