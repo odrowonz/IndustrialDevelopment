@@ -77,7 +77,7 @@ final class FeedViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Stop background mode
-        endBackgroundTask()
+        ​endBackgroundTask()
 
         print(type(of: self), #function)
     }
