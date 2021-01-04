@@ -11,69 +11,50 @@ import UIKit
 final class FeedViewController: UIViewController {
     // This property identifies the task request to run in the background.
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    var output: FeedViewOutput
     
-    // Get first post, if exists
-    let post: Post? = {
-        guard Storage.posts.count > 0 else { return nil }
-        return Storage.posts[0]
+    private lazy var feedStackView: FeedStackView = {
+        let feedSV = FeedStackView()
+        feedSV.toAutoLayout()
+        feedSV.onTap = {
+            post in
+            self.output.showPost(post)
+        }
+        return feedSV
     }()
     
-    private lazy var profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.toAutoLayout()
-        imageView.layer.borderWidth = 3
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.backgroundColor = .darkGray
-        imageView.clipsToBounds = true
-        // Make image sensitive for tap
-        imageView.isUserInteractionEnabled = true
-        return imageView
-    }()
+    init(output: FeedViewOutput) {
+        self.output = output
+        super.init(nibName:nil, bundle:.main)
+    }
     
-    private lazy var showPostButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.toAutoLayout()
-        button.setTitle("Open Post", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
-        button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
-        button.setShadowPath()
-        
-        button.addTarget(self, action: #selector(showPostButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    @objc private func showPostButtonTapped(_ sender: Any) {
-        let vc = PostViewController()
-        vc.post = post
-        navigationController?.pushViewController(vc, animated: true)
-        // Diagnostic
-        print(type(of: self), #function)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
-      super.viewDidLoad()
-      title = "Feed"
-      // Tunning root view
-      view.backgroundColor = .systemGreen
-      // Setup all visual elements
-      setupLayout()
-      // Diagnostic
-      print(type(of: self), #function)
+        super.viewDidLoad()
+        output.navigationController = navigationController
+        title = "Feed"
+        // Tunning root view
+        view.backgroundColor = .systemGreen
+        // Setup all visual elements
+        setupLayout()
+        // Diagnostic
+        print(type(of: self), #function)
     }
 
     // MARK: Layout
     private func setupLayout() {
-        view.addSubview(showPostButton)
-        
+        view.addSubview(feedStackView)
+
         let safe = view.safeAreaLayoutGuide
         
         let constraints = [
-            showPostButton.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-            showPostButton.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
-            showPostButton.widthAnchor.constraint(equalToConstant: 110),
-            showPostButton.heightAnchor.constraint(equalToConstant: 40)
+            feedStackView.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
+            feedStackView.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
+            feedStackView.widthAnchor.constraint(equalToConstant: 110),
+            feedStackView.heightAnchor.constraint(equalToConstant: 96)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -113,18 +94,6 @@ final class FeedViewController: UIViewController {
         super.viewDidLayoutSubviews()
         print(type(of: self), #function)
     }
-    
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == "post" else {
-            return
-        }
-        guard let postViewController = segue.destination as? PostViewController else {
-            return
-        }
-        postViewController.post = post
-    }
-    
 }
 
 // Background mopde injection

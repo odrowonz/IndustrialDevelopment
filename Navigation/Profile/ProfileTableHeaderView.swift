@@ -155,7 +155,6 @@ class ProfileTableHeaderView: UIView {
     /// - Parameter tableView: UITableView
     func configure(_ profile: Profile, tableView: UITableView) {
         profileImageView.image = UIImage(named: profile.image)
-        //profileImageStackView.imageName = profile.image
         profileNameLabel.text = profile.name
         profileStatusLabel.text = profile.status
         profileStatusTextField.text = profile.status
@@ -313,7 +312,6 @@ extension ProfileTableHeaderView {
         mainAnimator.addAnimations {
             self.state = self.state.change
             let safeFrame: CGRect = rootSV.safeAreaLayoutGuide.layoutFrame
-            //self.initialFrame = self.profileImageView.frame
             let mainSize: CGFloat
             if safeFrame.width <= safeFrame.height {
                 // Weight is main size

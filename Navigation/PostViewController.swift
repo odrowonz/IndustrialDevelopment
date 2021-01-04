@@ -32,14 +32,13 @@ class PostViewController: UIViewController {
         navigationController?.present(ic, animated: true)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         title = post?.description
         // Tunning root view
         view.backgroundColor = .systemPink
         // Setup all visual elements
         self.navigationItem.setRightBarButton(barButton, animated: true)
-        //setupLayout()
         // Diagnostic
         print(type(of: self), #function)
     }
