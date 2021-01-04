@@ -9,7 +9,7 @@
 import UIKit
 
 class MainTabBarController: UITabBarController {
-    
+
     /// Feed tab bar
     lazy var feedTabBar: UINavigationController = {
         var nav = UINavigationController()
@@ -20,7 +20,7 @@ class MainTabBarController: UITabBarController {
         nav.tabBarItem = UITabBarItem(title: title, image: image, selectedImage: image)
         return nav
     }()
-    
+
     /// Profile tab bar
     lazy var profileTabBar: UINavigationController = {
         var nav = UINavigationController()
@@ -32,7 +32,7 @@ class MainTabBarController: UITabBarController {
         nav.tabBarItem = UITabBarItem(title: title, image: image, selectedImage: image)
         return nav
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

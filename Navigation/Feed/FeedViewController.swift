@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SnapKit
+import iOSIntPackage
 
 final class FeedViewController: UIViewController {
     // This property identifies the task request to run in the background.
@@ -63,33 +65,33 @@ final class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
         // Start background mode
         registerBackgroundTask()
-        
+
         print(type(of: self), #function)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print(type(of: self), #function)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Stop background mode
-        ​endBackgroundTask()
-        
+        endBackgroundTask()
+
         print(type(of: self), #function)
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print(type(of: self), #function)
     }
-    
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         print(type(of: self), #function)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         print(type(of: self), #function)
