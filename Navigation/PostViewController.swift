@@ -32,8 +32,8 @@ class PostViewController: UIViewController {
         navigationController?.present(ic, animated: true)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         title = post?.description
         // Tunning root view
         view.backgroundColor = .systemPink
