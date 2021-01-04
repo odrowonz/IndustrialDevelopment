@@ -9,12 +9,12 @@
 import UIKit
 
 class InfoViewController: UIViewController {
-    
+
     var post: Post?
-    
+
     var cancelFinalAction: (() -> Void)?
     var deleteFinalAction: (() -> Void)?
-    
+
     private lazy var mainButton: UIButton = {
         let button = UIButton()
         button.toAutoLayout()
@@ -23,23 +23,23 @@ class InfoViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
         button.setShadowPath()
-        
+
         button.addTarget(self, action: #selector(showAlertButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemYellow
         // Do any additional setup after loading the view.
         setupLayout()
     }
-    
+
     private func setupLayout() {
         view.addSubview(mainButton)
-        
+
         let safe = view.safeAreaLayoutGuide
-        
+
         let constraints = [
             mainButton.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
             mainButton.centerYAnchor.constraint(equalTo: safe.centerYAnchor),
@@ -48,9 +48,11 @@ class InfoViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
+
     @objc private func showAlertButtonTapped(_ sender: Any) {
-        let alertController = UIAlertController(title: "Delete this post?", message: "You cannot restore this post", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Delete this post?",
+                                                message: "You cannot restore this post",
+                                                preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in
             if let nvc = self.navigationController {
                 // if it use navigation controller, just pop ViewController

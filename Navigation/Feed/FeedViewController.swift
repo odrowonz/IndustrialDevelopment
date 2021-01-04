@@ -7,30 +7,26 @@
 //
 
 import UIKit
+import SnapKit
+import iOSIntPackage
 
 final class FeedViewController: UIViewController {
     // This property identifies the task request to run in the background.
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
-    
+
     // Get first post, if exists
     let post: Post? = {
         guard Storage.posts.count > 0 else { return nil }
         return Storage.posts[0]
     }()
-    
-    private lazy var profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.toAutoLayout()
-        imageView.layer.borderWidth = 3
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.backgroundColor = .darkGray
-        imageView.clipsToBounds = true
-        // Make image sensitive for tap
-        imageView.isUserInteractionEnabled = true
-        return imageView
+
+    private lazy var profileImageView: PersonView = {
+        let personView = PersonView()
+        personView.named = "Petya"
+        personView.toAutoLayout()
+        return personView
     }()
-    
+
     private lazy var showPostButton: UIButton = {
         let button = UIButton(type: .system)
         button.toAutoLayout()
@@ -39,15 +35,15 @@ final class FeedViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.roundCornersWithRadius(4, top: true, bottom: true, shadowEnabled: true)
         button.setShadowPath()
-        
+
         button.addTarget(self, action: #selector(showPostButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     @objc private func showPostButtonTapped(_ sender: Any) {
-        let vc = PostViewController()
-        vc.post = post
-        navigationController?.pushViewController(vc, animated: true)
+        let postControlller = PostViewController()
+        postControlller.post = post
+        navigationController?.pushViewController(postControlller, animated: true)
         // Diagnostic
         print(type(of: self), #function)
     }
@@ -66,54 +62,60 @@ final class FeedViewController: UIViewController {
     // MARK: Layout
     private func setupLayout() {
         view.addSubview(showPostButton)
-        
+        view.addSubview(profileImageView)
+
         let safe = view.safeAreaLayoutGuide
         
-        let constraints = [
-            showPostButton.centerXAnchor.constraint(equalTo: safe.centerXAnchor),
-            showPostButton.topAnchor.constraint(equalTo: safe.topAnchor, constant: 16),
-            showPostButton.widthAnchor.constraint(equalToConstant: 110),
-            showPostButton.heightAnchor.constraint(equalToConstant: 40)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        showPostButton.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(safe)
+            make.top.equalTo(safe).offset(16)
+            make.width.equalTo(110)
+            make.height.equalTo(40)
+        }
+        
+        profileImageView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(showPostButton.snp.bottom).offset(16)
+            make.left.equalTo(safe).offset(16)
+            make.right.equalTo(safe).offset(-16)
+            make.bottom.equalTo(safe).offset(-16)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Start background mode
         registerBackgroundTask()
-        
+
         print(type(of: self), #function)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print(type(of: self), #function)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Stop background mode
-        ​endBackgroundTask()
-        
+        endBackgroundTask()
+
         print(type(of: self), #function)
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print(type(of: self), #function)
     }
-    
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         print(type(of: self), #function)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         print(type(of: self), #function)
     }
-    
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "post" else {
@@ -124,22 +126,19 @@ final class FeedViewController: UIViewController {
         }
         postViewController.post = post
     }
-    
-}
 
-// Background mopde injection
-extension FeedViewController {
-    func registerBackgroundTask() {
-        print("Background task started.")
-        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
-            self?.​endBackgroundTask()
-        }
-        assert(backgroundTask != .invalid)
-    }
-      
-    func ​endBackgroundTask() {
+    func endBackgroundTask() {
         print("Background task ended.")
         UIApplication.shared.endBackgroundTask(backgroundTask)
         backgroundTask = .invalid
+    }
+
+    // Background mopde injection
+    func registerBackgroundTask() {
+        print("Background task started.")
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            self?.endBackgroundTask()
+        }
+        assert(backgroundTask != .invalid)
     }
 }
