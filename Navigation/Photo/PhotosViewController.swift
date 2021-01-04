@@ -9,16 +9,16 @@
 import UIKit
 
 class PhotosViewController: UIViewController {
-    
+
     // сколько максимум ячеек должно поместиться в секцию
     private let maxCountOfItemsInSection: Int = 3
-    
+
     // сколько всего секций с ячейками
     private var countOfSections: Int = 0
-    
+
     // сколько секций заполнены целиком ячеками
     private var countOfFullSections: Int = 0
-    
+
     private var photos: [String] = [] {
         didSet {
             // сколько всего секций с ячейками
@@ -29,7 +29,7 @@ class PhotosViewController: UIViewController {
             collectionView.reloadData()
         }
     }
-    
+
     // коллекция
     private lazy var collectionView: UICollectionView = {
         // задаем слой
@@ -38,7 +38,8 @@ class PhotosViewController: UIViewController {
         // создаем коллекцию с нулевым фреймом и ранее определенным слоём
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         // регистрируем ячейку
-        collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: PhotosCollectionViewCell.self))
+        collectionView.register(PhotosCollectionViewCell.self,
+                                forCellWithReuseIdentifier: String(describing: PhotosCollectionViewCell.self))
         // всё выровнять
         collectionView.toAutoLayout()
         // белый фон
@@ -47,18 +48,18 @@ class PhotosViewController: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
-        
+
         return collectionView
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.photos = Storage.photos
-        
+
         setupLayout()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         // Показать навигационную панель
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -67,18 +68,18 @@ class PhotosViewController: UIViewController {
 
 // MARK: Layout
 extension PhotosViewController {
-    
+
     // Ограничители отрисовки
     private func setupLayout() {
         view.addSubview(collectionView)
-        
+
         let constraints = [
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
 }
@@ -89,7 +90,7 @@ extension PhotosViewController: UICollectionViewDataSource {
         // в каждой секции 3 ячейки (делим на три и округляем в большую сторону)
         return countOfSections
     }
-    
+
     // Задаёт количество ячеек в секции
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
@@ -104,12 +105,16 @@ extension PhotosViewController: UICollectionViewDataSource {
             return 0
         }
     }
-    
+
     // Формирует ячейку конкретной строки конкретной секции
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PhotosCollectionViewCell.self), for: indexPath) as! PhotosCollectionViewCell
-        cell.photo = photos[indexPath.section * maxCountOfItemsInSection + indexPath.row]
-        return cell
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
+                                                            String(describing: PhotosCollectionViewCell.self),
+                                                         for: indexPath) as? PhotosCollectionViewCell {
+            cell.photo = photos[indexPath.section * maxCountOfItemsInSection + indexPath.row]
+            return cell
+        } else { return UICollectionViewCell() }
     }
 }
 
@@ -121,20 +126,30 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
         return 8
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: CGFloat = (collectionView.bounds.width - offset * (CGFloat(maxCountOfItemsInSection)+1)) / CGFloat(maxCountOfItemsInSection)
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width: CGFloat = (collectionView.bounds.width -
+                              offset * (CGFloat(maxCountOfItemsInSection)+1)) /
+                             CGFloat(maxCountOfItemsInSection)
         return CGSize(width: width, height: width)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return offset
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return offset
     }
-   
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: offset, left: offset, bottom: .zero, right: offset)
     }
 }
