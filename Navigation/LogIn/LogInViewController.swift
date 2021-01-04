@@ -9,6 +9,9 @@
 import UIKit
 
 class LogInViewController: UIViewController {
+    /// Login and password checker
+    var authorizationDelegate: LoginViewControllerDelegate?
+    
     /// Social network logo
     private lazy var logo: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -32,6 +35,7 @@ class LogInViewController: UIViewController {
         textField.roundCornersWithRadius(10, top: true, bottom: false, shadowEnabled: false)
         textField.insertLeftIndent()
         textField.toAutoLayout()
+        textField.addTarget(self, action: #selector(clearWarning), for: UIControl.Event.editingChanged)
         return textField
     }()
 
@@ -50,9 +54,14 @@ class LogInViewController: UIViewController {
         textField.roundCornersWithRadius(10, top: false, bottom: true, shadowEnabled: false)
         textField.insertLeftIndent()
         textField.toAutoLayout()
+        textField.addTarget(self, action: #selector(clearWarning), for: UIControl.Event.editingChanged)
         return textField
     }()
-
+    
+    @objc func clearWarning() {
+        warning.text = ""
+    }
+    
     /// LogIn button
     private lazy var logIn: UIButton = {
         let button = UIButton(type: .system)
@@ -68,7 +77,18 @@ class LogInViewController: UIViewController {
         button.toAutoLayout()
         return button
     }()
-
+    
+    /// Warning label
+    private lazy var warning: UILabel = {
+        let label = UILabel()
+        label.toAutoLayout()
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .systemRed
+        label.numberOfLines = 1
+        label.textAlignment = .left
+        return label
+    }()
+    
     /// View for all UI elements
     private lazy var contentView: UIView = {
         let view = UIView()
@@ -87,7 +107,7 @@ class LogInViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        warning.text = ""
         // Background must be white
         view.backgroundColor = .white
         // All UI elements should be placed to view
@@ -136,6 +156,26 @@ class LogInViewController: UIViewController {
 
     // MARK: Actions
     @objc private func logInButtonTapped() {
+        /// Check that delegate is not nil
+        guard let delegate = authorizationDelegate else {
+            warning.text = "Authorization delegate is nil"
+            return
+        }
+        /// Check that login is not empty
+        guard let login = login.text, login != "" else {
+            warning.text = "Please input login"
+            return
+        }
+        /// Check that password is not empty
+        guard let password = password.text, password != "" else {
+            warning.text = "Please input password"
+            return
+        }
+        /// Check login and password
+        if !delegate.checkLogin(login) || !delegate.checkPassword(password) {
+            warning.text = "Login or password wrong"
+            return
+        }
         // Hide keyboard
         hideKeyboard()
         // Show navigation bar
@@ -161,6 +201,7 @@ class LogInViewController: UIViewController {
         contentView.addSubview(login)
         contentView.addSubview(password)
         contentView.addSubview(logIn)
+        contentView.addSubview(warning)
 
         let constraints = [
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -193,7 +234,10 @@ class LogInViewController: UIViewController {
             logIn.topAnchor.constraint(equalTo: password.bottomAnchor, constant: 16),
             logIn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logIn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            logIn.heightAnchor.constraint(equalToConstant: 50)
+            logIn.heightAnchor.constraint(equalToConstant: 50),
+            
+            warning.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 20),
+            warning.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)
@@ -202,8 +246,6 @@ class LogInViewController: UIViewController {
     // Hide keyboard
     func hideKeyboard() {
         view.endEditing(true)
-        //login.resignFirstResponder()
-        //password.resignFirstResponder()
     }
 }
 

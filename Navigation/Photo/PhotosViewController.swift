@@ -44,7 +44,6 @@ class PhotosViewController: UIViewController {
         collectionView.toAutoLayout()
         // белый фон
         collectionView.backgroundColor = .white
-        //collectionView.showsVerticalScrollIndicator = false
 
         collectionView.dataSource = self
         collectionView.delegate = self

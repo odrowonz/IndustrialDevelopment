@@ -13,7 +13,7 @@ class MainTabBarController: UITabBarController {
     /// Feed tab bar
     lazy var feedTabBar: UINavigationController = {
         var nav = UINavigationController()
-        let feedVC = FeedViewController()
+        let feedVC = FeedViewController(output: PostPresenter())
         nav.viewControllers = [feedVC]
         let title = "Feed"
         let image = UIImage(named: "house.fill")
@@ -25,6 +25,7 @@ class MainTabBarController: UITabBarController {
     lazy var profileTabBar: UINavigationController = {
         var nav = UINavigationController()
         let loginVC = LogInViewController(nibName: nil, bundle: nil)
+        loginVC.authorizationDelegate = LoginInspector()
         nav.viewControllers = [loginVC]
         let title = "Profile"
         let image = UIImage(named: "person.fill")
@@ -39,15 +40,4 @@ class MainTabBarController: UITabBarController {
         // Add tab bars
         viewControllers = [feedTabBar, profileTabBar]
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
