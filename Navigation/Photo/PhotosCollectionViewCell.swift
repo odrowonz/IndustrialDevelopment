@@ -16,7 +16,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    /// Картинка (фото)
+    /// Picture (photo)
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit

@@ -11,12 +11,20 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    var mainCoordinator: MainCoordinator?
+    lazy var tabBarController = UITabBarController()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // send that into our main coordinator so that it can control flow coordinators
+        mainCoordinator = AppCoordinator(tabBarController: tabBarController)
+        
+        // tell the coordinator to take over control
+        mainCoordinator?.start()
+        
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = MainTabBarController()
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         return true
     }

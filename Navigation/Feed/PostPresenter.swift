@@ -8,11 +8,13 @@
 
 import UIKit
 class PostPresenter: FeedViewOutput {
-    var navigationController: UINavigationController?
-    lazy var postViewController = PostViewController()
+    var flowCoordinator: FeedCoordinator
+    
+    init(_ flowCoordinator: FeedCoordinator) {
+        self.flowCoordinator = flowCoordinator
+    }
     
     func showPost(_ post: Post?) {
-        postViewController.post = post
-        self.navigationController?.pushViewController(postViewController, animated: true)
+        flowCoordinator.gotoPost(post)
     }
 }

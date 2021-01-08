@@ -9,7 +9,8 @@
 import UIKit
 
 class PostViewController: UIViewController {
-
+    var flowCoordinator: FlowCoordinator?
+    
     var post: Post?
 
     private lazy var barButton: UIBarButtonItem = {
@@ -18,16 +19,12 @@ class PostViewController: UIViewController {
     }()
 
     @objc private func showInfoButtonTapped() {
+        
         let infoController = InfoViewController()
         infoController.post = post
         infoController.cancelFinalAction = nil
         infoController.deleteFinalAction = {
-            // Guard of action's body
-            guard let nav = self.navigationController,
-                  nav.viewControllers.count > 0
-                  else { return }
-            // Go to root controller
-            nav.popToRootViewController(animated: true)
+            self.flowCoordinator?.backtoRoot()
         }
         navigationController?.present(infoController, animated: true)
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 protocol FeedViewOutput {
-    var navigationController: UINavigationController? { get set }
+    var flowCoordinator: FeedCoordinator { get set }
     
     func showPost(_ post: Post?)
 }

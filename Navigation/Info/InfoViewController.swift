@@ -9,7 +9,9 @@
 import UIKit
 
 class InfoViewController: UIViewController {
-
+    var mainCoordinator: MainCoordinator?
+    var flowCoordinator: FlowCoordinator?
+    
     var post: Post?
 
     var cancelFinalAction: (() -> Void)?

@@ -10,7 +10,8 @@ import UIKit
 import SnapKit
 
 final class ProfileViewController: UIViewController {
-
+    var flowCoordinator: ProfileCoordinator?
+    
     private var posts: [Post] = [] {
         didSet {
             postTableView.reloadData()
@@ -78,8 +79,7 @@ extension ProfileViewController: UITableViewDataSource {
     // Handle clicking on a cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            let photoController = PhotosViewController()
-            navigationController?.pushViewController(photoController, animated: true)
+            flowCoordinator?.gotoPhotos()
         }
     }
 
