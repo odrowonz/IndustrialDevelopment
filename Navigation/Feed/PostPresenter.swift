@@ -14,7 +14,7 @@ class PostPresenter: FeedViewOutput {
         self.flowCoordinator = flowCoordinator
     }
     
-    func showPost(_ post: Post?) {
+    func showPost(_ post: Post) {
         flowCoordinator.gotoPost(post)
     }
 }

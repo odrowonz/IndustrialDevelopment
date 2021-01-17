@@ -12,16 +12,15 @@ class FeedCoordinator: FlowCoordinator {
     lazy var postPresenter = PostPresenter(self)
     
     var navigationController: UINavigationController
-    var mainCoordinator: MainCoordinator
+    weak var mainCoordinator: AppCoordinator?
 
-    init(navigationController: UINavigationController, mainCoordinator: MainCoordinator) {
+    init(navigationController: UINavigationController, mainCoordinator: AppCoordinator?) {
         self.navigationController = navigationController
         self.mainCoordinator = mainCoordinator
     }
 
     func start() {
         let vc = FeedViewController(output: postPresenter)
-        vc.flowCoordinator = self
         navigationController.pushViewController(vc, animated: false)
     }
     
@@ -32,10 +31,20 @@ class FeedCoordinator: FlowCoordinator {
         navigationController.popToRootViewController(animated: true)
     }
     
-    func gotoPost(_ post: Post?) {
+    func gotoPost(_ post: Post) {
         let vc = PostViewController()
         vc.flowCoordinator = self
         vc.post = post
         navigationController.pushViewController(vc, animated: true)
+    }
+    
+    func gotoInfo(_ post: Post) {
+        let vc = InfoViewController()
+        vc.post = post
+        vc.cancelFinalAction = nil
+        vc.deleteFinalAction = { [weak self] in
+            self?.backtoRoot()
+        }
+        navigationController.present(vc, animated: true)
     }
 }

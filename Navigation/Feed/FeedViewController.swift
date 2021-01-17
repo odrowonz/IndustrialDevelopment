@@ -14,14 +14,13 @@ final class FeedViewController: UIViewController {
     // This property identifies the task request to run in the background.
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     var output: FeedViewOutput
-    var flowCoordinator: FeedCoordinator?
     
     private lazy var feedStackView: FeedStackView = {
         let feedSV = FeedStackView()
         feedSV.toAutoLayout()
         feedSV.onTap = {
             post in
-            self.output.showPost(post)
+            if let post = post { self.output.showPost(post) }
         }
         return feedSV
     }()

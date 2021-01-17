@@ -9,7 +9,7 @@
 import UIKit
 
 class PostViewController: UIViewController {
-    var flowCoordinator: FlowCoordinator?
+    weak var flowCoordinator: FeedCoordinator?
     
     var post: Post?
 
@@ -19,14 +19,9 @@ class PostViewController: UIViewController {
     }()
 
     @objc private func showInfoButtonTapped() {
-        
-        let infoController = InfoViewController()
-        infoController.post = post
-        infoController.cancelFinalAction = nil
-        infoController.deleteFinalAction = {
-            self.flowCoordinator?.backtoRoot()
+        if let post = post {
+            self.flowCoordinator?.gotoInfo(post)
         }
-        navigationController?.present(infoController, animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {

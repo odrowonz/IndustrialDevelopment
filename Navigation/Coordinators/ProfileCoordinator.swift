@@ -12,9 +12,9 @@ class ProfileCoordinator: FlowCoordinator {
     lazy var loginInspector = LoginInspector()
     
     var navigationController: UINavigationController
-    var mainCoordinator: MainCoordinator
+    weak var mainCoordinator: AppCoordinator?
 
-    init(navigationController: UINavigationController, mainCoordinator: MainCoordinator) {
+    init(navigationController: UINavigationController, mainCoordinator: AppCoordinator?) {
         self.navigationController = navigationController
         self.mainCoordinator = mainCoordinator
     }
@@ -36,6 +36,8 @@ class ProfileCoordinator: FlowCoordinator {
     func gotoProfile() {
         let vc = ProfileViewController()
         vc.flowCoordinator = self
+        // Hide navigation bar
+        navigationController.navigationBar.isHidden = true
         navigationController.pushViewController(vc, animated: true)
     }
     

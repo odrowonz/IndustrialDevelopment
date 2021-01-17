@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FlowCoordinator {
-    var mainCoordinator: MainCoordinator { get set }
+    var mainCoordinator: AppCoordinator? { get set }
     var navigationController: UINavigationController { get set }
 
     func start()

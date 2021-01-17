@@ -9,7 +9,7 @@
 import UIKit
 
 class PhotosViewController: UIViewController {
-    var flowCoordinator: FlowCoordinator?
+    weak var flowCoordinator: ProfileCoordinator?
     
     // How many maximum cells should fit in a section
     private let maxCountOfItemsInSection: Int = 3

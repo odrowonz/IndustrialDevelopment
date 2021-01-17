@@ -10,5 +10,5 @@ import UIKit
 protocol FeedViewOutput {
     var flowCoordinator: FeedCoordinator { get set }
     
-    func showPost(_ post: Post?)
+    func showPost(_ post: Post)
 }

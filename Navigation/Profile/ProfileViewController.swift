@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 final class ProfileViewController: UIViewController {
-    var flowCoordinator: ProfileCoordinator?
+    weak var flowCoordinator: ProfileCoordinator?
     
     private var posts: [Post] = [] {
         didSet {
@@ -59,9 +59,6 @@ final class ProfileViewController: UIViewController {
 
         self.posts = Storage.posts
         self.profiles = Storage.profiles
-
-        // Hide navigation bar
-        navigationController?.navigationBar.isHidden = true
     }
 
     required init?(coder: NSCoder) {
@@ -69,9 +66,6 @@ final class ProfileViewController: UIViewController {
 
         self.posts = Storage.posts
         self.profiles = Storage.profiles
-
-        // Hide navigation bar
-        navigationController?.navigationBar.isHidden = true
     }
 }
 
