@@ -9,7 +9,8 @@
 import UIKit
 
 class PostViewController: UIViewController {
-
+    weak var flowCoordinator: FeedCoordinator?
+    
     var post: Post?
 
     private lazy var barButton: UIBarButtonItem = {
@@ -18,18 +19,9 @@ class PostViewController: UIViewController {
     }()
 
     @objc private func showInfoButtonTapped() {
-        let infoController = InfoViewController()
-        infoController.post = post
-        infoController.cancelFinalAction = nil
-        infoController.deleteFinalAction = {
-            // Guard of action's body
-            guard let nav = self.navigationController,
-                  nav.viewControllers.count > 0
-                  else { return }
-            // Go to root controller
-            nav.popToRootViewController(animated: true)
+        if let post = post {
+            self.flowCoordinator?.gotoInfo(post)
         }
-        navigationController?.present(infoController, animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
