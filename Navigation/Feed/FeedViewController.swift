@@ -20,7 +20,7 @@ final class FeedViewController: UIViewController {
         feedSV.toAutoLayout()
         feedSV.onTap = {
             post in
-            self.output.showPost(post)
+            if let post = post { self.output.showPost(post) }
         }
         return feedSV
     }()
@@ -36,7 +36,6 @@ final class FeedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        output.navigationController = navigationController
         title = "Feed"
         // Tunning root view
         view.backgroundColor = .systemGreen

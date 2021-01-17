@@ -9,7 +9,6 @@
 import UIKit
 
 class InfoViewController: UIViewController {
-
     var post: Post?
 
     var cancelFinalAction: (() -> Void)?
@@ -62,7 +61,6 @@ class InfoViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
             }
             self.cancelFinalAction?()
-            print("Cancel")
         }
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
             if let nvc = self.navigationController {
@@ -73,7 +71,6 @@ class InfoViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
             }
             self.deleteFinalAction?()
-            print("Delete")
         }
         alertController.addAction(cancelAction)
         alertController.addAction(deleteAction)

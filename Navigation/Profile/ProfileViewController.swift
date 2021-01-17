@@ -10,7 +10,8 @@ import UIKit
 import SnapKit
 
 final class ProfileViewController: UIViewController {
-
+    weak var flowCoordinator: ProfileCoordinator?
+    
     private var posts: [Post] = [] {
         didSet {
             postTableView.reloadData()
@@ -58,9 +59,6 @@ final class ProfileViewController: UIViewController {
 
         self.posts = Storage.posts
         self.profiles = Storage.profiles
-
-        // Hide navigation bar
-        navigationController?.navigationBar.isHidden = true
     }
 
     required init?(coder: NSCoder) {
@@ -68,9 +66,6 @@ final class ProfileViewController: UIViewController {
 
         self.posts = Storage.posts
         self.profiles = Storage.profiles
-
-        // Hide navigation bar
-        navigationController?.navigationBar.isHidden = true
     }
 }
 
@@ -78,8 +73,7 @@ extension ProfileViewController: UITableViewDataSource {
     // Handle clicking on a cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            let photoController = PhotosViewController()
-            navigationController?.pushViewController(photoController, animated: true)
+            flowCoordinator?.gotoPhotos()
         }
     }
 

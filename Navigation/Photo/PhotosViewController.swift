@@ -9,40 +9,41 @@
 import UIKit
 
 class PhotosViewController: UIViewController {
-
-    // сколько максимум ячеек должно поместиться в секцию
+    weak var flowCoordinator: ProfileCoordinator?
+    
+    // How many maximum cells should fit in a section
     private let maxCountOfItemsInSection: Int = 3
 
-    // сколько всего секций с ячейками
+    // How many sections with cells in total
     private var countOfSections: Int = 0
 
-    // сколько секций заполнены целиком ячеками
+    // How many sections are filled entirely with cells
     private var countOfFullSections: Int = 0
 
     private var photos: [String] = [] {
         didSet {
-            // сколько всего секций с ячейками
+            // How many sections with cells in total
             self.countOfSections = lroundf(Float(photos.count / maxCountOfItemsInSection))
-            // сколько секций заполнены целиком ячеками
+            // How many sections are filled entirely with cells
             self.countOfFullSections = Int(photos.count / maxCountOfItemsInSection)
-            // переформировать коллекцию
+            // Reload the collection
             collectionView.reloadData()
         }
     }
 
-    // коллекция
+    // Collection
     private lazy var collectionView: UICollectionView = {
-        // задаем слой
+        // Define the layer
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        // создаем коллекцию с нулевым фреймом и ранее определенным слоём
+        // Create a collection with a zero frame and a previously defined layer
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        // регистрируем ячейку
+        // Registering the cell
         collectionView.register(PhotosCollectionViewCell.self,
                                 forCellWithReuseIdentifier: String(describing: PhotosCollectionViewCell.self))
-        // всё выровнять
+        // Align everything
         collectionView.toAutoLayout()
-        // белый фон
+        // White background
         collectionView.backgroundColor = .white
 
         collectionView.dataSource = self
@@ -60,7 +61,7 @@ class PhotosViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        // Показать навигационную панель
+        // Show navigation bar
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
 }
@@ -68,7 +69,7 @@ class PhotosViewController: UIViewController {
 // MARK: Layout
 extension PhotosViewController {
 
-    // Ограничители отрисовки
+    // Draw constraints
     private func setupLayout() {
         view.addSubview(collectionView)
 
@@ -84,28 +85,28 @@ extension PhotosViewController {
 }
 
 extension PhotosViewController: UICollectionViewDataSource {
-    // Задаёт количество секций
+    // Sets the number of sections
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         // в каждой секции 3 ячейки (делим на три и округляем в большую сторону)
         return countOfSections
     }
 
-    // Задаёт количество ячеек в секции
+    // Sets the number of cells in section
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
-        // если секция полностью заполнена
+        // if the section is completely full
         case 0...(countOfFullSections-1):
             return maxCountOfItemsInSection
-        // если секция частично заполнена
+        // if the section is partially full
         case countOfFullSections...(countOfSections-1):
             return photos.count % maxCountOfItemsInSection
-        // если незапланированная секция
+        // if the unplanned section
         default:
             return 0
         }
     }
 
-    // Формирует ячейку конкретной строки конкретной секции
+    // Forms a cell of a specific line of a specific section
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier:

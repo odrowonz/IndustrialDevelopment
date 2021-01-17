@@ -9,6 +9,8 @@
 import UIKit
 
 class LogInViewController: UIViewController {
+    weak var flowCoordinator: ProfileCoordinator?
+    
     /// Login and password checker
     var authorizationDelegate: LoginViewControllerDelegate?
     
@@ -178,11 +180,8 @@ class LogInViewController: UIViewController {
         }
         // Hide keyboard
         hideKeyboard()
-        // Show navigation bar
-        navigationController?.navigationBar.isHidden = false
         // Go to profile
-        let profileController = ProfileViewController()
-        navigationController?.pushViewController(profileController, animated: true)
+        flowCoordinator?.gotoProfile()
     }
 
     @objc private func tapBackground() {
